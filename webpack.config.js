@@ -3,6 +3,7 @@ var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var fs = require('fs')
 
+var projectVersion = path.resolve('./version')
 var version = fs.readFileSync(projectVersion, 'utf8').substring(1)
 
 module.exports = {
