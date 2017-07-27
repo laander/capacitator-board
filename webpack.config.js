@@ -1,6 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var version = fs.readFileSync(projectVersion, 'utf8').substring(1)
 
 module.exports = {
   entry: './src/main.js',
@@ -74,7 +75,8 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'index.html'
+      template: 'index.html',
+      version: version
     })
   ])
 }
