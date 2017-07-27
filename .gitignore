@@ -3,6 +3,8 @@ node_modules/
 dist/
 npm-debug.log
 yarn-error.log
+.netlify
+.env
 
 # Editor directories and files
 .idea
