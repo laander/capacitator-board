@@ -157,7 +157,7 @@ body {
 h1 {
   margin: 0;
   font-size: 13px;
-  color: rgba(#ffffff, 0.23);
+  color: #ff9d00;
 }
 
 table {
