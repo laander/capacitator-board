@@ -26,7 +26,14 @@
                 {{ environment.version }}
               </span>
             </span>
-            <span class="user">@{{ environment.user }}</span>
+            <span class="user">
+              <template v-if="environment.user">
+                @{{ environment.user }}
+              </template>
+              <template v-else>
+                <i>unknown</i>
+              </template>
+            </span>
             <span class="timestamp" :class="getTimeColorCode(environment.timestamp)">
               <div class="timestamp-dot"></div>
               {{ getTimestamp(environment.timestamp) }}
