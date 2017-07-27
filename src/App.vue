@@ -2,8 +2,11 @@
   <div id="app">
     <table class="table" cellpadding="0" cellspacing="0">
       <tr>
-        <th class="project">
+        <th class="project header">
           <h1>$capacitator</h1>
+          <div v-if="loading">
+            <br />Loading...
+          </div>
         </th>
         <th v-for="header in headers" class="header">
           {{ header }}
@@ -46,6 +49,7 @@ export default {
   name: 'app',
   data () {
     return {
+      loading: true,
       rawProjects: {},
       proProjects: {}
     }
@@ -94,6 +98,7 @@ export default {
       }).then(myBlob => {
         this.rawProjects = myBlob
         this.proProjects = this.sortProjectEnvs(myBlob)
+        this.loading = false
       })
     },
     sortProjectEnvs(projects) {
@@ -136,12 +141,17 @@ body {
   padding: 0;
   margin: 0;
 }
+
 #app {
   font-family: 'Monaco', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 13px;
   text-align: center;
+}
+
+.app-version {
+  display: none;
 }
 
 h1 {
@@ -159,17 +169,12 @@ table {
     &.header {
       color: #a3d6ff;
       padding: 25px 15px;
-      // border-right: 1px solid #3a3b44;
-      //     border-bottom: 1px solid #3a3b44;
     }
 
     &.project {
-          // border-bottom: 1px solid #3a3b44;
-          // border-right: 1px solid #3a3b44;
       width: 130px;
       text-align: left;
-      padding-left: 30px;
-      // border-color: #2c2d36;
+      padding: 25px 15px 25px 30px;
     }
 
     .not-available {
