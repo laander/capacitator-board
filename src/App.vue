@@ -74,7 +74,7 @@ export default {
         'admin',
         'booking-js',
         'js-sdk',
-        'my-timekit'
+        'my-hosted'
       ]
     },
     orderEnvironments () {
