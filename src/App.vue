@@ -35,8 +35,10 @@
               </template>
             </span>
             <span class="timestamp" :class="getTimeColorCode(environment.timestamp)">
-              <div class="timestamp-dot"></div>
-              {{ getTimestamp(environment.timestamp) }}
+              <div v-if="shouldShowTimestampDot(environment.timestamp)" class="timestamp-dot" title="Released within the last hour"></div>
+              <span :title="environment.timestamp">
+                {{ getTimestamp(environment.timestamp) }}
+              </span>
             </span>
           </div>
           <div v-else class="not-available">
@@ -124,11 +126,16 @@ export default {
       return moment(time).fromNow()
     },
     getTimeColorCode(time) {
-      let timeDiff = Math.abs(moment(time).diff(moment(), 'days'));
-      if (timeDiff <= 2 ) return 'green'
-      if (timeDiff <= 5 ) return 'yellow'
-      if (timeDiff <= 15 ) return 'orange'
+      let timeDiffHours = Math.abs(moment(time).diff(moment(), 'hours'));
+      let timeDiffDays = timeDiffHours / 24
+      if (timeDiffHours <= 12 ) return 'green'
+      if (timeDiffDays <= 3 ) return 'yellow'
+      if (timeDiffDays <= 10 ) return 'orange'
       return 'red'
+    },
+    shouldShowTimestampDot (time) {
+      let timeDiff = Math.abs(moment(time).diff(moment(), 'minutes'));
+      return timeDiff < 60
     },
     sortByPreference(source, reference, key) {
       return source.sort((a, b) => {
@@ -238,14 +245,14 @@ table {
       }
 
       &.green {
-        color: rgb(108, 255, 133);
+        color: rgb(96, 255, 123);
 
         .timestamp-dot {
           display: inline-block;
-          background-color: rgb(108, 255, 133);
+          background-color: rgb(96, 255, 123);
         }
       }
-      &.yellow { color: rgb(209, 255, 152); }
+      &.yellow { color: rgb(222, 255, 152); }
       &.orange { color: rgb(255, 194, 75); }
       &.red { color: rgb(255, 107, 107); }
     }
@@ -268,7 +275,7 @@ a {
 
 @-webkit-keyframes pulsate {
     0% { opacity: 1; }
-    50% { opacity: 0.3}
+    50% { opacity: 0.2}
     100% { opacity: 1; }
  }
 
