@@ -1,13 +1,27 @@
 var path = require('path')
+var config = require('dotenv').config({path: path.join(__dirname, '.env')})
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var fs = require('fs')
+var lodash = require('lodash')
 
 var projectVersion = path.resolve('./version')
 var version = fs.readFileSync(projectVersion, 'utf8').substring(1)
 
+function loadConfig () {
+  var defaultConfigPath = path.resolve('./config.default.js')
+  var defaultConfig = require(defaultConfigPath)
+  var customConfigPath = path.resolve('./config.js')
+  if (!fs.existsSync(customConfigPath)) return defaultConfig
+  var customConfig = require(customConfigPath)
+  return lodash.defaults(customConfig, defaultConfig)
+}
+
 module.exports = {
-  entry: './src/main.js',
+  entry: [
+    'whatwg-fetch',
+    './src/main.js'
+  ],
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/',
@@ -59,7 +73,12 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  plugins: [
+    new webpack.DefinePlugin({
+      CONFIG: JSON.stringify(loadConfig())
+    })
+  ]
 }
 
 if (process.env.NODE_ENV === 'development') {

@@ -4,7 +4,7 @@
       <tr>
         <th class="project header">
           <h1>
-            <a @click.prevent="initData" :class="{ 'error': error }">
+            <a @click.prevent="loadData" :class="{ 'error': error }">
               <span>$capacitator</span>
               <loading :active="loading"></loading>
               <error :active="error"></error>
@@ -33,11 +33,14 @@
 </template>
 
 <script>
-import { process } from 'services/dataMassage'
-import { fetcher } from 'services/dataFetcher'
+import { config } from 'services/configLoader.js'
+import { process } from 'services/dataMassage.js'
+import { fetcher } from 'services/dataFetcher.js'
 import deployment from 'components/deployment.vue'
 import loading from 'components/loading.vue'
 import error from 'components/error.vue'
+
+const projectConfig = config()
 
 export default {
   name: 'app',
@@ -54,47 +57,31 @@ export default {
       environments: []
     }
   },
-  computed: {
-    orderPreferences () {
-      return {
-        projects: [
-          'api',
-          'admin',
-          'booking-js',
-          'js-sdk',
-          'my-hosted'
-        ],
-        environments: [
-          'prod',
-          'staging',
-          'staging2',
-          'staging3',
-          'staging4',
-          'staging5',
-          'beta'
-        ]
-      }
-    }
-  },
   created () {
-    this.initData()
+    this.loadData()
   },
   methods: {
-    initData () {
+    loadData () {
       this.error = false
       this.loading = true
-      fetcher()
-      .then(result => {
-        const processed = process(result, this.orderPreferences)
-        this.environments = processed.environments
-        this.projects = processed.data
-        this.loading = false
-      })
-      .catch(result => {
-        console.log(result)
-        this.error = true
-        this.loading = false
-      })
+      fetcher(projectConfig.apiEndpoint)
+      .then(this.dataLoaded)
+      .catch(this.dataFailed)
+    },
+    dataLoaded (response) {
+      const preferences = {
+        projects: projectConfig.projectsOrderPreferences,
+        environments: projectConfig.environmentsOrderPreferences
+      }
+      const processed = process(response, preferences)
+      this.environments = processed.environments
+      this.projects = processed.data
+      this.loading = false
+    },
+    dataFailed (response) {
+      this.error = true
+      this.loading = false
+      console.error('Error loading data:', response)
     }
   }
 }
