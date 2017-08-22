@@ -1,6 +1,32 @@
-# Capacitator - deployment status dashboard
+# Capacitator
 
-> A deployment dashboard that gives status information on projects/environments, deployed by flux
+> A minimalistic deployment dashboard, console style
+
+## Highlights
+
+- Shows your most recent deploys
+- Grid view, with environment as columns and projects as row
+- Single API call to fetch data (setup)
+
+## Install
+
+The easy way; deploy and host it directly on Netlify in one click (almost):  
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/laander/capacitator)
+
+Want to host it somewhere else?
+
+```bash
+# Checkout from git
+git clone git@github.com:laander/capacitator.git
+cd capacitator
+# Copy the default config and edit it to your preference
+cp config.default.js config.js
+# Build it, bundle will be saved to /dist dir
+yarn build
+```
+
+asd
 
 ## Setup
 

@@ -1,20 +1,16 @@
 <template>
-  <div v-if="deployment.version" class="card">
-    <span class="version">
-      <a v-if="deployment.link" :href="deployment.link" target="_blank">
-        {{ deployment.version }}
-      </a>
-      <span v-else>
-        {{ deployment.version }}
-      </span>
+  <div v-if="deployment.version" class="deployment">
+    <a v-if="deployment.link" :href="deployment.link" target="_blank" class="version">
+      {{ deployment.version }}
+    </a>
+    <span v-else class="version">
+      {{ deployment.version }}
     </span>
-    <span class="user">
-      <template v-if="deployment.user">
-        @{{ deployment.user }}
-      </template>
-      <template v-else>
-        <i>unknown</i>
-      </template>
+    <span v-if="deployment.user" class="user">
+      @{{ deployment.user }}
+    </span>
+    <span v-else class="user">
+      <i>unknown</i>
     </span>
     <span class="timestamp" :class="getTimeColorCode(deployment.timestamp)">
       <div v-if="shouldShowTimestampDot(deployment.timestamp)" class="timestamp-dot" title="Released within the last hour"></div>
@@ -23,8 +19,8 @@
       </span>
     </span>
   </div>
-  <div v-else class="card--not-available">
-    N/A
+  <div v-else class="deployment--na">
+    <span>N/A</span>
   </div>
 </template>
 
@@ -60,36 +56,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.card {
+.deployment {
   background-color: #2c2d36;
   border-radius: 3px;
   padding: 20px 15px;
-  margin: 7px;
+  vertical-align: middle;
 
   &:hover {
     background-color: #32333d;
   }
 }
 
-.card--not-available {
+.deployment--na {
   font-size: 11px;
   color: rgba(#cccccc, 0.48);
+
+  span {
+    display: block;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
 
 .version {
   display: block;
   padding-bottom: 10px;
   font-size: 12px;
+  color: rgba(#ffffff, 0.76);
+  text-decoration: none;
+}
 
-  a {
-    color: rgba(#ffffff, 0.76);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+a.version:hover {
+  text-decoration: underline;
 }
 
 .user {

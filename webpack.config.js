@@ -7,8 +7,6 @@ var config = require('./utils/loadConfig')
 var projectVersion = path.resolve('./version')
 var version = fs.readFileSync(projectVersion, 'utf8').substring(1)
 
-console.log(config)
-
 module.exports = {
   entry: [
     'whatwg-fetch',

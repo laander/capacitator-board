@@ -1,34 +1,23 @@
 <template>
-  <div id="app">
-    <table class="table" cellpadding="0" cellspacing="0">
-      <tr>
-        <th class="project header">
-          <h1>
-            <a @click.prevent="loadData" :class="{ 'error': error }">
-              <span>$capacitator</span>
-              <loading :active="loading"></loading>
-              <error :active="error"></error>
-            </a>
-          </h1>
-        </th>
-        <th v-for="header in environments" class="header" :class="{ 'empty': loading || error }">
-          {{ header }}
-        </th>
-      </tr>
-      <tr v-for="project in projects" class="row" :class="{ 'empty': loading || error }">
-        <td class="project">
-          <strong>
-            {{ project.project }}
-          </strong>
-        </td>
-        <td v-for="deployment in project.environments" :class="{ 'deploy-cell': deployment.version }">
-          <deployment
-            class="deployment"
-            :deployment="deployment">
-          </deployment>
-        </td>
-      </tr>
-    </table>
+  <div class="grid" :style="gridNumbers">
+    <heading
+      @refresh="loadData"
+      :loading="loading"
+      :error="error">
+    </heading>
+    <div v-for="environment in environments" class="environment">
+      {{ environment }}
+    </div>
+    <template v-for="project in projects">
+      <div class="project">
+        <span>{{ project.project }}</span>
+      </div>
+      <template v-for="deployment in project.environments">
+        <deployment
+          :deployment="deployment">
+        </deployment>
+      </template>
+    </template>
   </div>
 </template>
 
@@ -37,8 +26,7 @@ import { config } from 'services/configLoader.js'
 import { process } from 'services/dataMassage.js'
 import { fetcher } from 'services/dataFetcher.js'
 import deployment from 'components/deployment.vue'
-import loading from 'components/loading.vue'
-import error from 'components/error.vue'
+import heading from 'components/heading.vue'
 
 const projectConfig = config()
 
@@ -46,8 +34,15 @@ export default {
   name: 'app',
   components: {
     deployment,
-    loading,
-    error
+    heading
+  },
+  computed: {
+    gridNumbers () {
+      return {
+        '--colNum': this.environments.length + 1,
+        '--rowNum': this.projects.length + 1
+      }
+    }
   },
   data () {
     return {
@@ -97,9 +92,6 @@ export default {
 body {
   background-color: #212228;
   color: rgba(#ffffff, 0.76);
-}
-
-#app {
   font-family: 'Monaco', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -111,64 +103,31 @@ body {
   display: none;
 }
 
-h1, h1 a {
-  margin: 0;
-  font-size: 13px;
-  color: #ffb339;
-  cursor: pointer;
+.grid {
+  --rowNum: 1;
+  --colNum: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--colNum), 1fr);
+  grid-template-rows: repeat(var(--rowNum), auto);
+  grid-gap: 10px;
+  margin: 10px;
+}
 
-  &.error {
-    color: #ef5050;
+.environment {
+  color: #a3d6ff;
+  padding: 20px 10px;
+}
+
+.project {
+  text-align: left;
+  padding: 0 10px 0 20px;
+
+  span {
+    display: block;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 
-.table {
-  width: 100%;
-  table-layout: fixed;
-
-  .header,
-  .row {
-    transition: opacity 0.1s ease;
-    opacity: 1;
-
-    &.empty {
-      opacity: 0;
-    }
-  }
-
-  td, th {
-
-    &.header {
-      color: #a3d6ff;
-      padding: 25px 15px;
-    }
-
-    &.project {
-      text-align: left;
-      padding: 25px 15px 25px 30px;
-    }
-
-    &.deploy-cell {
-      vertical-align: top;
-    }
-
-    .deployment {
-      min-width: 100px;
-    }
-  }
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #fff;
-}
 </style>
