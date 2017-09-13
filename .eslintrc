@@ -11,6 +11,6 @@
   },
   "rules": {
     "no-debugger": 0,
-    "vue/require-v-for-key": false
+    "vue/require-v-for-key": 0
   }
 }
