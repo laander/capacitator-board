@@ -67,19 +67,17 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       CONFIG: JSON.stringify(config)
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'index.html',
+      version: version
     })
   ]
 }
 
 if (process.env.NODE_ENV === 'development') {
   module.exports.output.publicPath = '/'
-  module.exports.plugins = (module.exports.plugins || []).concat([
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
-      version: version
-    })
-  ])
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -99,11 +97,6 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
-      version: version
     })
   ])
 }
