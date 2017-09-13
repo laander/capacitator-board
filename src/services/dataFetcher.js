@@ -6,5 +6,5 @@ export function fetcher (endpoint) {
     'Content-Type': 'application/json'
   }
   return fetch(url, { headers })
-  .then(response => response.json())
+    .then(response => response.json())
 }

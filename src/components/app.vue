@@ -9,11 +9,12 @@
       {{ environment }}
     </div>
     <template v-for="project in projects">
-      <div class="project">
+      <div class="project" :key="project.project">
         <span>{{ project.project }}</span>
       </div>
       <template v-for="deployment in project.environments">
         <deployment
+          :key="deployment.environment"
           :deployment="deployment">
         </deployment>
       </template>
@@ -60,8 +61,8 @@ export default {
       this.error = false
       this.loading = true
       fetcher(projectConfig.apiEndpoint)
-      .then(this.dataLoaded)
-      .catch(this.dataFailed)
+        .then(this.dataLoaded)
+        .catch(this.dataFailed)
     },
     dataLoaded (response) {
       const preferences = {

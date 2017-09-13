@@ -25,7 +25,7 @@ function sortByPreference (source, reference, key) {
     if (reference.indexOf(a[key] || a) === -1) return true
     if (reference.indexOf(b[key] || b) === -1) return false
     return reference.indexOf(a[key] || a) > reference.indexOf(b[key] || b)
-  });
+  })
 }
 
 function extractEnvironments (projects, prefs) {

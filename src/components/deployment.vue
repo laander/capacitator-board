@@ -36,19 +36,19 @@ export default {
     }
   },
   methods: {
-    getTimestamp(time) {
+    getTimestamp (time) {
       return moment(time).fromNow()
     },
-    getTimeColorCode(time) {
-      let timeDiffHours = Math.abs(moment(time).diff(moment(), 'hours'));
+    getTimeColorCode (time) {
+      let timeDiffHours = Math.abs(moment(time).diff(moment(), 'hours'))
       let timeDiffDays = timeDiffHours / 24
-      if (timeDiffHours <= 12 ) return 'green'
-      if (timeDiffDays <= 3 ) return 'yellow'
-      if (timeDiffDays <= 10 ) return 'orange'
+      if (timeDiffHours <= 12) return 'green'
+      if (timeDiffDays <= 3) return 'yellow'
+      if (timeDiffDays <= 10) return 'orange'
       return 'red'
     },
     shouldShowTimestampDot (time) {
-      let timeDiff = Math.abs(moment(time).diff(moment(), 'minutes'));
+      let timeDiff = Math.abs(moment(time).diff(moment(), 'minutes'))
       return timeDiff < 60
     }
   }

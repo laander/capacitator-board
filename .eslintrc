@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "standard",
+    "plugin:vue/recommended"
+  ],
+  "plugins": [
+    "vue"
+  ],
+  "globals": {
+    "CONFIG": true
+  },
+  "rules": {
+    "no-debugger": 0,
+    "vue/require-v-for-key": false
+  }
+}
