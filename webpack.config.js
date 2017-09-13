@@ -20,6 +20,12 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(js|vue)$/,
+        enforce: 'pre',
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
@@ -58,7 +64,11 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true
+    noInfo: true,
+    overlay: {
+      warnings: true,
+      errors: true
+    }
   },
   performance: {
     hints: false
