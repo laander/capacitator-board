@@ -18,15 +18,12 @@ Want to host it somewhere else?
 
 ```bash
 # Checkout from git
-git clone git@github.com:laander/capacitator.git
-cd capacitator
+git clone git@github.com:laander/capacitator.git && cd capacitator
 # Copy the default config and edit it to your preference
-cp config.default.js config.js
+cp config.default.js config.js && pico config.js
 # Build it, bundle will be saved to /dist dir
 yarn build
 ```
-
-asd
 
 ## Setup
 
